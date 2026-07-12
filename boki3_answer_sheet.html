@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>日商簿記3級 解答練習シート</title>
+<style>
+  :root{
+    --paper:#FAF7EF;
+    --ink:#1B2A4A;
+    --ink-soft:#3E4E6B;
+    --line:#D8D2C0;
+    --accent:#B08D57;
+    --accent-soft:#EFE4CC;
+    --ok:#3E7A4C;
+    --ok-bg:#E7F2E9;
+    --ng:#B0473F;
+    --ng-bg:#FBEAE8;
+    --mono: 'Courier New', 'SFMono-Regular', Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+    padding:24px 16px 60px;
+  }
+  .wrap{max-width:960px;margin:0 auto;}
+  header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    border-bottom:3px double var(--ink);
+    padding-bottom:14px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  header h1{
+    font-size:1.55rem;
+    margin:0;
+    letter-spacing:.06em;
+    font-weight:700;
+  }
+  header .sub{
+    font-family:sans-serif;
+    font-size:.78rem;
+    color:var(--ink-soft);
+    letter-spacing:.04em;
+  }
+  .meta{
+    font-family:sans-serif;
+    font-size:.8rem;
+    color:var(--ink-soft);
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .meta label{display:flex;gap:6px;align-items:center;}
+  .meta input[type=text]{
+    font-family:sans-serif;
+    border:none;
+    border-bottom:1px solid var(--line);
+    background:transparent;
+    padding:2px 4px;
+    width:120px;
+  }
+  nav.tabs{
+    display:flex;
+    gap:4px;
+    margin-bottom:18px;
+    border-bottom:1px solid var(--line);
+  }
+  nav.tabs button{
+    font-family:sans-serif;
+    font-size:.85rem;
+    letter-spacing:.03em;
+    padding:9px 18px;
+    border:1px solid var(--line);
+    border-bottom:none;
+    background:#F1ECDF;
+    color:var(--ink-soft);
+    cursor:pointer;
+    border-radius:6px 6px 0 0;
+    position:relative;
+    top:1px;
+  }
+  nav.tabs button.active{
+    background:var(--paper);
+    color:var(--ink);
+    font-weight:700;
+    border-color:var(--ink);
+    border-bottom:1px solid var(--paper);
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .panel-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:4px 0 14px;
+  }
+  .panel-title .badge{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:sans-serif;
+    font-size:.72rem;
+    padding:3px 10px;
+    border-radius:3px;
+    letter-spacing:.08em;
+  }
+  .panel-title h2{margin:0;font-size:1.15rem;}
+  .hint{
+    font-family:sans-serif;
+    font-size:.76rem;
+    color:var(--ink-soft);
+    background:var(--accent-soft);
+    border-left:3px solid var(--accent);
+    padding:8px 12px;
+    margin-bottom:16px;
+    line-height:1.6;
+  }
+
+  /* --- 第1問: 仕訳 --- */
+  .journal-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px 14px;
+  }
+  .jcard{
+    border:1px solid var(--line);
+    border-radius:4px;
+    background:#fff;
+    overflow:hidden;
+  }
+  .jcard .jnum{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:sans-serif;
+    font-size:.72rem;
+    padding:4px 10px;
+    letter-spacing:.06em;
+  }
+  .jtable{width:100%;border-collapse:collapse;font-size:.82rem;}
+  .jtable th{
+    font-family:sans-serif;
+    font-weight:600;
+    font-size:.66rem;
+    color:var(--ink-soft);
+    background:#F5F1E6;
+    padding:4px 2px;
+    border-bottom:1px solid var(--line);
+    letter-spacing:.04em;
+  }
+  .jtable td{
+    border-bottom:1px dotted var(--line);
+    padding:2px 3px;
+  }
+  .jtable input{
+    width:100%;
+    border:none;
+    background:transparent;
+    font-family:var(--mono);
+    font-size:.82rem;
+    text-align:center;
+    padding:3px 2px;
+    color:var(--ink);
+  }
+  .jtable input.kigou{text-align:center;}
+  .jtable input.kingaku{text-align:right;padding-right:4px;}
+  .jtable input:focus{outline:none;background:var(--accent-soft);}
+  .col-d{border-right:2px solid var(--line);}
+
+  /* --- 第2問: 自由記入 --- */
+  .free-table{width:100%;border-collapse:collapse;background:#fff;}
+  .free-table th{
+    font-family:sans-serif;font-size:.72rem;color:var(--ink-soft);
+    background:#F5F1E6;padding:6px;border:1px solid var(--line);
+  }
+  .free-table td{border:1px solid var(--line);padding:0;}
+  .free-table input, .free-table textarea{
+    width:100%;border:none;background:transparent;
+    font-family:var(--mono);font-size:.85rem;padding:6px 8px;
+    resize:vertical;
+  }
+  .free-table input:focus, .free-table textarea:focus{outline:none;background:var(--accent-soft);}
+  .row-actions{
+    font-family:sans-serif;font-size:.78rem;margin-top:10px;
+    display:flex;gap:8px;
+  }
+  .scratch{
+    width:100%;min-height:160px;margin-top:18px;
+    border:1px solid var(--line);border-radius:4px;
+    background:
+      repeating-linear-gradient(#fff, #fff 27px, #EFE9D8 28px);
+    font-family:var(--mono);font-size:.85rem;line-height:28px;
+    padding:0 10px;color:var(--ink);
+  }
+  .scratch:focus{outline:1px solid var(--accent);}
+
+  /* --- 第3問: 試算表 --- */
+  .tb-table{width:100%;border-collapse:collapse;background:#fff;}
+  .tb-table th{
+    font-family:sans-serif;font-size:.72rem;color:var(--ink-soft);
+    background:#F5F1E6;padding:6px;border:1px solid var(--line);
+  }
+  .tb-table td{border:1px solid var(--line);padding:0;}
+  .tb-table input{
+    width:100%;border:none;background:transparent;
+    font-family:var(--mono);font-size:.85rem;padding:6px 8px;
+  }
+  .tb-table td.amt input{text-align:right;}
+  .tb-table td.name input{text-align:left;font-family:sans-serif;}
+  .tb-table input:focus{outline:none;background:var(--accent-soft);}
+  .tb-table tfoot td{
+    font-family:sans-serif;font-weight:700;
+    background:#F5F1E6;padding:8px;
+  }
+  .tb-total{text-align:right;font-family:var(--mono);}
+  .balance-check{
+    margin-top:12px;
+    font-family:sans-serif;
+    font-size:.85rem;
+    padding:9px 14px;
+    border-radius:4px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .balance-check.ok{background:var(--ok-bg);color:var(--ok);}
+  .balance-check.ng{background:var(--ng-bg);color:var(--ng);}
+
+  .btn{
+    font-family:sans-serif;font-size:.78rem;
+    border:1px solid var(--ink);
+    background:#fff;color:var(--ink);
+    padding:6px 14px;border-radius:4px;cursor:pointer;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper);}
+  .btn.danger{border-color:var(--ng);color:var(--ng);}
+  .btn.danger:hover{background:var(--ng);color:#fff;}
+
+  .toolbar{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:24px;padding-top:14px;border-top:1px solid var(--line);
+    flex-wrap:wrap;gap:10px;
+  }
+  .toolbar .msg{font-family:sans-serif;font-size:.76rem;color:var(--ink-soft);}
+
+  @media print{
+    nav.tabs, .toolbar, .hint, .row-actions{display:none !important;}
+    section.panel{display:block !important;page-break-after:always;}
+    body{padding:0;background:#fff;}
+  }
+  @media (max-width:640px){
+    .journal-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>日商簿記3級　解答練習シート</h1>
+      <div class="sub">CBT方式（ネット試験）想定・デジタル解答用紙</div>
+    </div>
+    <div class="meta">
+      <label>氏名 <input type="text" placeholder=""></label>
+      <label>回・日付 <input type="text" placeholder=""></label>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="q1">第1問　仕訳</button>
+    <button class="tab-btn" data-tab="q2">第2問</button>
+    <button class="tab-btn" data-tab="q3">第3問</button>
+  </nav>
+
+  <!-- 第1問 -->
+  <section class="panel active" id="q1">
+    <div class="panel-title"><span class="badge">45点</span><h2>仕訳問題（15問）</h2></div>
+    <div class="hint">
+      各問について、問題文で示された記号（ア・イ・ウ…）と金額を入力してください。1問につき借方・貸方それぞれ最大4行まで記入できます。全部使わなくても構いません。
+    </div>
+    <div class="journal-grid" id="journalGrid"></div>
+  </section>
+
+  <!-- 第2問 -->
+  <section class="panel" id="q2">
+    <div class="panel-title"><span class="badge">20点</span><h2>第2問（勘定記入・補助簿・株主資本等変動計算書 など）</h2></div>
+    <div class="hint">
+      第2問は回によって出題形式（勘定記入、伝票、補助簿、株主資本等変動計算書など）が変わります。下の汎用表を項目名に合わせて自由に書き換え、行の追加・削除で対応してください。
+    </div>
+    <table class="free-table" id="freeTable">
+      <thead>
+        <tr>
+          <th style="width:34%">摘要・勘定科目</th>
+          <th style="width:33%">借方 / 左側</th>
+          <th style="width:33%">貸方 / 右側</th>
+        </tr>
+      </thead>
+      <tbody id="freeTableBody"></tbody>
+    </table>
+    <div class="row-actions">
+      <button class="btn" id="addFreeRow">＋ 行を追加</button>
+      <button class="btn danger" id="removeFreeRow">－ 最終行を削除</button>
+    </div>
+    <textarea class="scratch" id="scratch2" placeholder="下書き・計算メモ"></textarea>
+  </section>
+
+  <!-- 第3問 -->
+  <section class="panel" id="q3">
+    <div class="panel-title"><span class="badge">35点</span><h2>第3問（決算整理後残高試算表 / 精算表 など）</h2></div>
+    <div class="hint">
+      勘定科目名は自由に書き換えられます。行の追加・削除ができ、下部で借方・貸方合計と貸借一致を自動判定します。精算表など列が異なる場合も列見出しを書き換えて流用できます。
+    </div>
+    <table class="tb-table" id="tbTable">
+      <thead>
+        <tr>
+          <th style="width:28%">借方金額</th>
+          <th style="width:44%">勘定科目</th>
+          <th style="width:28%">貸方金額</th>
+        </tr>
+      </thead>
+      <tbody id="tbTableBody"></tbody>
+      <tfoot>
+        <tr>
+          <td class="tb-total" id="tbDebitTotal">0</td>
+          <td style="text-align:center;">合計</td>
+          <td class="tb-total" id="tbCreditTotal">0</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="row-actions">
+      <button class="btn" id="addTbRow">＋ 行を追加</button>
+      <button class="btn danger" id="removeTbRow">－ 最終行を削除</button>
+    </div>
+    <div id="balanceCheck" class="balance-check ok">貸借一致：差額 0 円</div>
+  </section>
+
+  <div class="toolbar">
+    <div class="msg">入力内容はこの画面を開いている間のみ保持されます（保存はされません）。</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn" id="printBtn">🖨 印刷 / PDF保存</button>
+      <button class="btn danger" id="resetBtn">全てリセット</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ---- タブ切り替え ----
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ---- 第1問: 15問 × 借方4行/貸方4行 ----
+const journalGrid = document.getElementById('journalGrid');
+function buildJournalCard(no){
+  const card = document.createElement('div');
+  card.className = 'jcard';
+  card.innerHTML = `
+    <div class="jnum">第 ${no} 問</div>
+    <table class="jtable">
+      <thead>
+        <tr>
+          <th class="col-d">記号（借方）</th><th class="col-d">金額（借方）</th>
+          <th>記号（貸方）</th><th>金額（貸方）</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${[0,1,2,3].map(()=>`
+        <tr>
+          <td class="col-d"><input class="kigou" maxlength="4"></td>
+          <td class="col-d"><input class="kingaku" inputmode="numeric"></td>
+          <td><input class="kigou" maxlength="4"></td>
+          <td><input class="kingaku" inputmode="numeric"></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+  return card;
+}
+for(let i=1;i<=15;i++){
+  journalGrid.appendChild(buildJournalCard(i));
+}
+
+// ---- 数値入力の3桁カンマ整形（フォーカスアウト時） ----
+document.addEventListener('focusout', (e)=>{
+  if(e.target.classList && e.target.classList.contains('kingaku')){
+    formatNumberInput(e.target);
+  }
+});
+function formatNumberInput(input){
+  const raw = input.value.replace(/[^0-9]/g,'');
+  input.value = raw ? Number(raw).toLocaleString('ja-JP') : '';
+}
+
+// ---- 第2問: 汎用テーブル ----
+const freeBody = document.getElementById('freeTableBody');
+function addFreeRow(){
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td><input type="text"></td>
+    <td><input type="text"></td>
+    <td><input type="text"></td>
+  `;
+  freeBody.appendChild(tr);
+}
+for(let i=0;i<10;i++) addFreeRow();
+document.getElementById('addFreeRow').addEventListener('click', addFreeRow);
+document.getElementById('removeFreeRow').addEventListener('click', ()=>{
+  if(freeBody.lastElementChild) freeBody.removeChild(freeBody.lastElementChild);
+});
+
+// ---- 第3問: 試算表テーブル ----
+const tbBody = document.getElementById('tbTableBody');
+const defaultAccounts = [
+  '現金','普通預金','売掛金','繰越商品','備品',
+  '買掛金','未払費用','借入金','資本金','繰越利益剰余金',
+  '売上','受取利息','仕入','給料','支払家賃',
+  '通信費','減価償却費','貸倒引当金繰入','支払利息','法人税、住民税及び事業税'
+];
+function addTbRow(name=''){
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="amt"><input type="text" inputmode="numeric"></td>
+    <td class="name"><input type="text" value="${name}"></td>
+    <td class="amt"><input type="text" inputmode="numeric"></td>
+  `;
+  tbBody.appendChild(tr);
+}
+defaultAccounts.forEach(addTbRow);
+document.getElementById('addTbRow').addEventListener('click', ()=>addTbRow());
+document.getElementById('removeTbRow').addEventListener('click', ()=>{
+  if(tbBody.lastElementChild) tbBody.removeChild(tbBody.lastElementChild);
+  updateTbTotals();
+});
+
+function parseNum(v){
+  const n = Number(String(v).replace(/[^0-9.-]/g,''));
+  return isNaN(n) ? 0 : n;
+}
+function updateTbTotals(){
+  let dSum = 0, cSum = 0;
+  tbBody.querySelectorAll('tr').forEach(tr=>{
+    const amtCells = tr.querySelectorAll('td.amt input');
+    dSum += parseNum(amtCells[0].value);
+    cSum += parseNum(amtCells[1].value);
+  });
+  document.getElementById('tbDebitTotal').textContent = dSum.toLocaleString('ja-JP');
+  document.getElementById('tbCreditTotal').textContent = cSum.toLocaleString('ja-JP');
+  const diff = dSum - cSum;
+  const box = document.getElementById('balanceCheck');
+  if(diff === 0 && (dSum>0 || cSum>0)){
+    box.className = 'balance-check ok';
+    box.textContent = '貸借一致：差額 0 円 ✓';
+  } else {
+    box.className = 'balance-check ng';
+    box.textContent = `貸借不一致：差額 ${Math.abs(diff).toLocaleString('ja-JP')} 円`;
+  }
+}
+document.getElementById('q3').addEventListener('input', (e)=>{
+  if(e.target.closest('td.amt')){
+    formatNumberInput2(e.target);
+  }
+  updateTbTotals();
+});
+function formatNumberInput2(input){
+  // 入力中はそのまま、focusoutで整形
+}
+document.getElementById('q3').addEventListener('focusout', (e)=>{
+  if(e.target.closest && e.target.closest('td.amt')){
+    const raw = e.target.value.replace(/[^0-9]/g,'');
+    e.target.value = raw ? Number(raw).toLocaleString('ja-JP') : '';
+    updateTbTotals();
+  }
+});
+updateTbTotals();
+
+// ---- 印刷 ----
+document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+
+// ---- リセット ----
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('全ての入力内容を消去します。よろしいですか？')) return;
+  document.querySelectorAll('input[type=text], input:not([type])').forEach(i=>{
+    if(i.closest('.meta')) return;
+    i.value = '';
+  });
+  document.getElementById('scratch2').value = '';
+  tbBody.innerHTML = '';
+  defaultAccounts.forEach(addTbRow);
+  updateTbTotals();
+});
+</script>
+</body>
+</html>
